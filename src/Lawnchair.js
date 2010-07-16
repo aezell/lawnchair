@@ -68,8 +68,7 @@ Lawnchair.prototype = {
      paged:function(size, callback) {
         var cb = this.adaptor.terseToVerboseCallback(callback);
         this.all(function(results) {
-            var l = (results.length/size) + 1;
-            for (var i = 1; i <= l; i++) {
+            while (results.length > 0) {
                 var return_results = results.splice(0, size);
                 cb(return_results);
             }
