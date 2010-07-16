@@ -63,19 +63,15 @@ Lawnchair.prototype = {
     /**
      * Paged iterator.
      * - Builds a second array and passes it to the callback when the size reaches the given size.
-     * - Funky math on i is so that size makes sense to most humans.
+     * - Make i 1-based so size makes more sense to a human
      */
      paged:function(size, callback) {
         var cb = this.adaptor.terseToVerboseCallback(callback);
         this.all(function(results) {
-            var l = results.length + 1;
-            var return_results = [];
-            for (var i = 1; i < l; i++) {
-                return_results.push(results[i-1]);
-                if (i % size == 0) {
-                    cb(return_results);
-                    return_results = [];
-                }
+            var l = (results.length/size) + 1;
+            for (var i = 1; i <= l; i++) {
+                var return_results = results.splice(0, size);
+                cb(return_results);
             }
         });
     },
